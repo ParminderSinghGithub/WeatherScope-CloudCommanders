@@ -1,0 +1,45 @@
+name: pre-deploy checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-dockerfiles:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fail if any Dockerfile contains VOLUME
+        run: |
+          set -e
+          files=$(git ls-files | grep -E "(^|/)Dockerfile$" || true)
+          if [ -z "$files" ]; then
+            echo "No Dockerfiles found, skipping VOLUME check."
+            exit 0
+          fi
+          echo "Checking Dockerfiles for VOLUME..."
+          for f in $files; do
+            if grep -nE "^\s*VOLUME\b" "$f" >/dev/null; then
+              echo "ERROR: Found VOLUME in $f — Railway forbids VOLUME in Dockerfiles."
+              grep -nE "^\s*VOLUME\b" "$f"
+              exit 1
+            fi
+          done
+          echo "No VOLUME instructions found."
+
+      - name: Fail if railway.json references docker-compose.yml
+        run: |
+          if [ -f railway.json ]; then
+            if grep -q "docker-compose.yml" railway.json; then
+              echo "ERROR: railway.json references docker-compose.yml in dockerfilePath. This causes Docker to try to parse the compose YAML as a Dockerfile and fail. Remove dockerfilePath or point it to a real Dockerfile.";
+              cat railway.json
+              exit 1
+            fi
+            echo "railway.json ok."
+          else
+            echo "no railway.json found, skipping check."
+          fi
