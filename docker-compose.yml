@@ -1,11 +1,13 @@
-version: '3.8'
+# Docker Compose file for Will It Rain on My Parade
+# IMPORTANT: Do NOT run `docker build docker-compose.yml` or try to build this file with "docker build".
+# docker build expects a Dockerfile. This YAML is for orchestration only and is detected automatically by
+# Railway when you run `railway up` from the repository root.
 
 services:
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: weather-backend
     environment:
       - VC_API_KEY=${VC_API_KEY}
     ports:
@@ -24,12 +26,10 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: weather-frontend
     ports:
       - "3000:80"
     depends_on:
-      backend:
-        condition: service_healthy
+      - backend
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/health"]
       interval: 30s
@@ -43,3 +43,7 @@ services:
 networks:
   weather-network:
     driver: bridge
+
+# volumes:
+#   # Add any persistent volumes here if needed in the future
+#   weather-data:
