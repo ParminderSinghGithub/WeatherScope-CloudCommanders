@@ -1,8 +1,7 @@
 [build]
 dockerfile = "Dockerfile"
-buildArgs = ["VITE_API_URL=${{VITE_API_URL}}"]
 
 [deploy]
-healthcheckPath = "/"
+healthcheckPath = "/health"
 healthcheckTimeout = 100
 restartPolicyType = "on_failure"

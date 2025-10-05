@@ -1,6 +1,10 @@
 import { ProbabilityResponse, ProbabilityData, FetchProbabilitiesParams } from '../types/weather'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api'
+const API_BASE_URL = import.meta.env.VITE_API_URL
+
+// Log the API URL being used
+console.log('🔧 API_BASE_URL:', API_BASE_URL)
+console.log('🔧 VITE_API_URL:', import.meta.env.VITE_API_URL)
 
 class WeatherApiError extends Error {
   constructor(message: string, public status?: number) {
@@ -10,10 +14,16 @@ class WeatherApiError extends Error {
 }
 
 async function fetchWithErrorHandling(url: string): Promise<any> {
+  console.log('🌐 Fetching:', url)
+  
   try {
     const response = await fetch(url)
+    console.log('📡 Response status:', response.status)
     
     if (!response.ok) {
+      const errorText = await response.text()
+      console.error('❌ Error response:', errorText)
+      
       if (response.status === 503) {
         throw new WeatherApiError('Weather service is currently unavailable. Please try again later.', 503)
       } else if (response.status === 422) {
@@ -25,13 +35,19 @@ async function fetchWithErrorHandling(url: string): Promise<any> {
       }
     }
     
-    return await response.json()
+    const data = await response.json()
+    console.log('✅ Success:', data)
+    return data
   } catch (error) {
+    console.error('💥 Fetch error:', error)
+    
     if (error instanceof WeatherApiError) {
       throw error
     } else if (error instanceof TypeError) {
+      console.error('💥 Network error details:', error.message)
       throw new WeatherApiError('Network error. Please check your connection and try again.')
     } else {
+      console.error('💥 Unexpected error:', error)
       throw new WeatherApiError('An unexpected error occurred.')
     }
   }

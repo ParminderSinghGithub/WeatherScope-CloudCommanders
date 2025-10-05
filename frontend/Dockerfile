@@ -1,4 +1,4 @@
-# Multi-stage build for React frontend
+# Build stage
 FROM node:18-alpine as build
 
 WORKDIR /app
@@ -6,33 +6,35 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies (including dev dependencies for build)
-RUN npm install
+# Install dependencies
+RUN npm ci
+
+# Copy environment file first
+COPY .env.production ./
 
 # Copy source code
 COPY . .
 
-# Build the application
+# Build the application (Vite will read .env.production)
 RUN npm run build
 
-# Production stage with nginx
-FROM nginx:alpine
+# Production stage - use Node.js with serve
+FROM node:18-alpine
 
-# Install curl for health checks
-RUN apk add --no-cache curl
+WORKDIR /app
+
+# Install serve globally
+RUN npm install -g serve
 
 # Copy built assets from build stage
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist ./dist
 
-# Copy custom nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose port 80
-EXPOSE 80
+# Expose port (Railway will use $PORT)
+EXPOSE 3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost/ || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:$PORT/ || exit 1
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start serve on Railway's PORT
+CMD serve -s dist -l $PORT
