@@ -8,6 +8,8 @@ A sleek, interactive web application providing **data-driven probabilities of ex
 
 - **[Live Application]:** [weatherscope-production.up.railway.app](https://weatherscope-frontend-production.up.railway.app)  
 
+📹 *[Video Demo] ![Uploading Demo Video.gif…]()*
+
 ---
 
 ## 🎯 Problem We’re Solving
