@@ -1,5 +1,5 @@
-# Railway-compatible Docker Compose for WeatherScope (NASA-25-Cloud_Commanders)
-version: "3.9"
+# Docker Compose file for Will It Rain on My Parade
+# No version needed for modern Docker Compose
 
 services:
   backend:
@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
     container_name: weather-backend
     environment:
-      - VC_API_KEY=${VC_API_KEY}  # Railway environment variable
+      - VC_API_KEY=${VC_API_KEY}
     ports:
       - "8000:8000"
     healthcheck:
@@ -20,8 +20,6 @@ services:
     restart: unless-stopped
     networks:
       - weather-network
-    volumes:
-      - weather-data:/app/data  # Railway-managed persistent volume
 
   frontend:
     build:
@@ -47,5 +45,6 @@ networks:
   weather-network:
     driver: bridge
 
-volumes:
-  weather-data:  # Railway-managed persistent volume for backend storage
+# volumes:
+#   # Add any persistent volumes here if needed in the future
+#   weather-data:
