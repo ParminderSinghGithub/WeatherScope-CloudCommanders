@@ -1,4 +1,4 @@
-# 🌦️ WeatherScope — Your NASA-Powered Weather Risk Dashboard
+🌦️ WeatherScope — Your NASA-Powered Weather Risk Dashboard
 
 A sleek, interactive web application providing **data-driven probabilities of extreme weather events** (heat, rain, wind, etc.) for any location and time — powered by **NASA Earth Observation Datasets**.
 
@@ -8,7 +8,7 @@ A sleek, interactive web application providing **data-driven probabilities of ex
 
 - **[Live Application]:** [weatherscope-production.up.railway.app](https://weatherscope-frontend-production.up.railway.app)  
 
-📹 *[Video Demo] ![Uploading Demo Video.gif…]()*
+- **[Video Demo]:** ![Demo Video (1)](https://github.com/user-attachments/assets/5acb329a-eca5-4001-832c-c49bf61c98aa)
 
 ---
 
