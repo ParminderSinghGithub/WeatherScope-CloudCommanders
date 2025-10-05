@@ -8,7 +8,9 @@ A sleek, interactive web application providing **data-driven probabilities of ex
 
 - **[Live Application]:** [weatherscope-production.up.railway.app](https://weatherscope-frontend-production.up.railway.app)  
 
-- **[Video Demo]:** ![Demo Video (1)](https://github.com/user-attachments/assets/5acb329a-eca5-4001-832c-c49bf61c98aa)
+- **[Video Demo]:** 
+
+![Demo Video (1)](https://github.com/user-attachments/assets/5acb329a-eca5-4001-832c-c49bf61c98aa)
 
 ---
 
