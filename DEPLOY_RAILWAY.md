@@ -41,7 +41,7 @@ The repository includes `railway.json` that configures the build and deployment:
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
     "builder": "nixpacks",
-    "buildCommand": "docker compose up"
+    "buildCommand": "docker compose build"
   },
   "deploy": {
     "startCommand": "docker compose up",
@@ -54,7 +54,8 @@ The repository includes `railway.json` that configures the build and deployment:
 
 This configuration:
 - Uses Railway's nixpacks builder with Docker Compose support
-- Runs `docker compose up` for both build and deploy
+- Uses `docker compose build` for building services
+- Uses `docker compose up` only for starting services
 - Configures health checks and restart policy
 - Automatically detects our multi-service setup via `docker-compose.yml`
 
