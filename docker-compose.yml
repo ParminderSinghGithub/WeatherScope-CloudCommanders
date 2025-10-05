@@ -1,5 +1,4 @@
-# Docker Compose file for Will It Rain on My Parade
-# No version needed for modern Docker Compose
+version: '3.8'
 
 services:
   backend:
@@ -44,7 +43,3 @@ services:
 networks:
   weather-network:
     driver: bridge
-
-# volumes:
-#   # Add any persistent volumes here if needed in the future
-#   weather-data:
