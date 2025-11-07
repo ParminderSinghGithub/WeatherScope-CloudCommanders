@@ -1,19 +1,9 @@
-# macOS / editors
-.DS_Store
-.vscode/
-.idea/
-
-# Python
 .venv/
 __pycache__/
 *.pyc
+*.pyo
+node_modules/
 
-# Node / frontend
-frontend/node_modules/
-dist/
-build/
-
-# Env & secrets
 .env
 .env.*
 backend/.env
