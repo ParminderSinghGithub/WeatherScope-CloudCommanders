@@ -23,21 +23,40 @@ This empowers users to plan trips or events with **data-driven climate insight**
 
 ---
 
+
 ## 🛰️ Data Sources & Methodology
 
-WeatherScope integrates public **NASA Earth Observation Data Systems** for long-term historical weather patterns:
+WeatherScope integrates **real NASA climate datasets**:
 
-| NASA Source | Purpose / Use | Access Protocol |
+| NASA Source | Variable / Use | Access Method |
 |--------------|----------------|----------------|
-| **GES DISC / OPeNDAP (Hyrax)** | Provides long-term daily and monthly datasets for temperature, precipitation, windspeed, and humidity. | OPeNDAP endpoints used for subsetting by coordinates and time period. |
-| **Giovanni** | For spatially averaged and climatological statistics over user-selected regions. | Accessed programmatically to compute time-series and climatology statistics. |
-| **NASA Earthdata Search** | Enables retrieval of metadata, dataset identifiers, and global product access. | Used for linking datasets, metadata, and variable definitions. |
+| **MERRA-2** (Modern-Era Retrospective Analysis) | Air temperature, windspeed, humidity, surface fluxes | GES DISC / OPeNDAP |
+| **IMERG / GPM** (Global Precipitation Measurement) | High-resolution rainfall detection, extreme precipitation | GES DISC / OPeNDAP |
+| **NASA POWER** | Temperature, precipitation, windspeed — used for fast fallback | POWER REST API (JSON) |
+| **GES DISC Hyrax OPeNDAP** | Climate variable subsetting by coordinate and date | OPeNDAP endpoints |
+| **Giovanni** | Time series & climatology statistics | Programmatic queries |
+| **Earthdata Search** | Dataset metadata, product discovery | Earthdata APIs |
 
 The backend processes these datasets to:
-- Retrieve multi-year observations for a selected lat/lon and date.
-- Calculate the probability that chosen variables exceed defined thresholds.
-- Return summarized results and historical distributions for visualization.
-- Provide metadata (units, dataset source, retrieval timestamp) with each result.
+✔ Retrieve multi-year observations for a selected lat/lon and date.
+✔ Calculate the probability that chosen variables exceed defined thresholds.
+✔ Return summarized results and historical distributions for visualization.
+✔ Provide metadata (units, dataset source, retrieval timestamp) with each result.
+✔ Checks extreme thresholds:
+- Heat > 35°C  
+- Cold < 5°C  
+- Rain > 0.1mm (or custom)  
+- Wind > 15 m/s  
+
+✔ Computes:
+- % probability  
+- number of years analyzed  
+- raw yearly values  
+✔ Returns JSON results with source metadata  
+✔ If high-res dataset fails → **POWER fallback**
+
+Everything is derived from **NASA’s long-term datasets**, not short-range forecasts.
+
 
 All calculations are **derived from NASA’s public climatological archives** rather than short-term weather APIs.
 
@@ -64,16 +83,19 @@ All calculations are **derived from NASA’s public climatological archives** ra
 - **Framer Motion** for smooth UI animations
 
 ### Backend
-- **FastAPI (Python)** for asynchronous, high-performance API services
+- **FastAPI (Python)** for asynchronous, high-performance API services + **Uvicorn**
 - **NASA OPeNDAP / Giovanni / Earthdata APIs** for dataset access
 - **Asyncio** for concurrent multi-variable data processing
 - **Pandas / NumPy** for climatological analysis
+- **CORS** enabled for frontend
+- **POWER** fallback for reliability
 
 ### Infrastructure
 - **Docker & Docker Compose** for containerization  
 - **Railway** for cloud deployment and orchestration  
 - **Nginx** for reverse proxy and static file serving  
 - **Multi-Stage Builds** for optimized production images
+- **`.env`** based config
 
 ---
 
@@ -95,11 +117,17 @@ Users can download:
 - **CSV** — Structured tabular data for selected variables.
 - **JSON** — Nested data with distributions, metadata, and NASA source information.
 
-Each file includes:
-- Dataset and variable names  
-- Units (°C, mm, m/s, etc.)  
-- Retrieval timestamp  
-- Geographic and temporal context  
+Each export includes:
+| Field | Description |
+|-------|-------------|
+| Dataset Source | POWER / MERRA-2 / IMERG |
+| Units | (°C, mm/day, m/s) |
+| Years Used | e.g., 2001-2024 |
+| Probability (%) | of extreme condition |
+| Historical Values | per year on that date |
+| Lat/Lon | analyzed point |
+| Timestamp | retrieval time |
+
 
 ---
 
@@ -116,8 +144,11 @@ Each file includes:
 ## 🌐 NASA Data References
 
 - [GES DISC OPeNDAP Server (Hyrax)](https://disc.gsfc.nasa.gov/services/opendap/)  
+- [NASA POWER API Service](https://power.larc.nasa.gov/)  
+- [NASA GES DISC MERRA-2](https://disc.gsfc.nasa.gov/datasets?keywords=MERRA-2)  
 - [NASA Giovanni Visualization Tool](https://giovanni.gsfc.nasa.gov/)  
 - [NASA Earthdata Search Portal](https://search.earthdata.nasa.gov/)  
+- [NASA IMERG Retrievals for GPM](https://gpm.nasa.gov/data/imerg)  
 - [NASA Data Access Tutorials](https://disc.gsfc.nasa.gov/information/howto)
 
 ---
