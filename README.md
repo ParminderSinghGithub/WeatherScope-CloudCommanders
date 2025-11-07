@@ -134,9 +134,9 @@ Each export includes:
 ## 📊 Example Insight
 
 > “For **Washington, District of Columbia, United States** on **March 15**, NASA data shows:  
-> 🌡️ Probability of temperature < 5 °C: **70 %**  
-> 🌧️ Probability of rainfall > 0.9 mm: **30 %**  
-> 🌬️ Probability of windspeed > 9 m/s: **20 %**  
+> 🌡️ Probability of temperature < 5 °C: **70%**  
+> 🌧️ Probability of rainfall > 0.9 mm: **30%**  
+> 🌬️ Probability of windspeed > 9 m/s: **20%**  
 > — Based on 20+ years of historical records.”
 
 ---
