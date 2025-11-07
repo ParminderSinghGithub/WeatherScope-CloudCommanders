@@ -4,25 +4,29 @@
 
 ### Prerequisites
 - **Docker** and **Docker Compose** installed on your system
-- **Visual Crossing Weather API Key** (free tier available)
+- **NASA Earthdata Account** (free registration required)
 
-### Step 1: Get API Key
-1. Visit [Visual Crossing Weather API](https://www.visualcrossing.com/weather-api)
-2. Sign up for a free account
-3. Copy your API key from the dashboard
+### Step 1: Create NASA Earthdata Account
+1. Visit [NASA Earthdata Login](https://urs.earthdata.nasa.gov/)
+2. Click "Register" and create a free account
+3. Verify your email address
 
-### Step 2: Configure Environment
-1. Copy the example environment file:
-   ```bash
-   cp .env.example .env
-   ```
+### Step 2: Configure Credentials
+Create a `_netrc` file in your home directory:
 
-2. Edit the `.env` file and add your API key:
-   ```env
-   VC_API_KEY=your_visual_crossing_api_key_here
-   NODE_ENV=development
-   PYTHONPATH=.
-   ```
+**Windows:** `C:\Users\YourUsername\_netrc`
+```
+machine urs.earthdata.nasa.gov
+    login your_nasa_username
+    password your_nasa_password
+```
+
+**Linux/Mac:** `~/.netrc`
+```
+machine urs.earthdata.nasa.gov
+    login your_nasa_username
+    password your_nasa_password
+```
 
 ### Step 3: Start the Application
 ```bash
@@ -34,7 +38,7 @@ docker-compose up --build -d
 ```
 
 ### Step 4: Access the Application
-- **Frontend**: http://localhost:3000
+- **Frontend**: http://localhost:5173
 - **Backend API**: http://localhost:8000
 - **API Documentation**: http://localhost:8000/docs
 
@@ -126,10 +130,11 @@ docker-compose up --build
 
 #### Common Issues
 
-**1. API Key Errors**
-- Verify your Visual Crossing API key is correct
-- Check if you've exceeded your API quota
-- Ensure the `.env` file is in the project root
+**1. Authentication Errors**
+- Verify your NASA Earthdata credentials are correct
+- Ensure `_netrc` file exists in your home directory
+- Check file permissions (should be readable)
+- Test login at https://urs.earthdata.nasa.gov/
 
 **2. Location Search Not Working**
 - Check your internet connection
@@ -138,11 +143,11 @@ docker-compose up --build
 
 **3. Docker Issues**
 - Ensure Docker daemon is running
-- Check if ports 3000 and 8000 are available
+- Check if ports 5173 and 8000 are available
 - Try `docker-compose down` then `docker-compose up --build`
 
 **4. No Weather Data**
-- Verify your API key is valid and active
+- Verify NASA Earthdata credentials are configured
 - Check the browser console for error messages
 - Ensure the backend container is healthy: `docker-compose ps`
 
@@ -153,16 +158,16 @@ docker-compose up --build
 
 ## 🔒 Security Notes
 
-### API Key Protection
-- **Never commit** your `.env` file to version control
-- The `.env` file is already in `.gitignore`
+### Credential Protection
+- **Never commit** your `_netrc` file to version control
+- The `_netrc` and `.netrc` files are in `.gitignore`
 - Use environment variables in production deployments
 
 ### Data Privacy
 - WeatherScope doesn't store personal data
 - Location data is processed client-side
 - No tracking or analytics are implemented
-- Weather data comes from public historical records
+- Weather data comes from NASA public archives
 
 ---
 

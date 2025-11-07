@@ -3,38 +3,40 @@ FROM node:18-alpine as build
 
 WORKDIR /app
 
+# Accept build argument
+ARG VITE_API_URL=http://localhost:8000
+ENV VITE_API_URL=$VITE_API_URL
+
 # Copy package files
 COPY package*.json ./
 
 # Install dependencies
 RUN npm ci
 
-# Copy environment file first
-COPY .env.production ./
-
 # Copy source code
 COPY . .
 
-# Build the application (Vite will read .env.production)
+# Build the application
 RUN npm run build
 
-# Production stage - use Node.js with serve
-FROM node:18-alpine
+# Production stage - use nginx for better performance
+FROM nginx:alpine
 
-WORKDIR /app
-
-# Install serve globally
-RUN npm install -g serve
+# Install envsubst for environment variable substitution
+RUN apk add --no-cache gettext
 
 # Copy built assets from build stage
-COPY --from=build /app/dist ./dist
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expose port (Railway will use $PORT)
-EXPOSE 3000
+# Copy nginx configuration template
+COPY nginx.conf.template /etc/nginx/templates/default.conf.template
+
+# Expose port (Railway will set PORT environment variable)
+EXPOSE ${PORT:-5173}
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://localhost:$PORT/ || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-5173}/ || exit 1
 
-# Start serve on Railway's PORT
-CMD serve -s dist -l $PORT
+# Start nginx with envsubst
+CMD ["/bin/sh", "-c", "envsubst '$$PORT' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
