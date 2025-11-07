@@ -133,10 +133,10 @@ Each export includes:
 
 ## 📊 Example Insight
 
-> “For **Rishikesh, India** on **March 15**, NASA data shows:  
-> 🌡️ Probability of temperature > 35 °C: **38 %**  
-> 🌧️ Probability of rainfall > 20 mm: **15 %**  
-> 🌬️ Probability of windspeed > 20 km/h: **22 %**  
+> “For **Washington, District of Columbia, United States** on **March 15**, NASA data shows:  
+> 🌡️ Probability of temperature < 5 °C: **70 %**  
+> 🌧️ Probability of rainfall > 0.9 mm: **30 %**  
+> 🌬️ Probability of windspeed > 9 m/s: **20 %**  
 > — Based on 20+ years of historical records.”
 
 ---
