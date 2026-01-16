@@ -1,8 +1,10 @@
 .venv/
+venv/
 __pycache__/
 *.pyc
 *.pyo
 node_modules/
+.vite/
 
 .env
 .env.*
@@ -10,3 +12,16 @@ backend/.env
 frontend/.env
 frontend/.env.*
 *.log
+
+# Local scripts
+start.ps1
+start.sh
+test-*.ps1
+test-*.sh
+
+# Temporary/build files
+dist/
+build/
+*.swp
+*.swo
+.DS_Store
