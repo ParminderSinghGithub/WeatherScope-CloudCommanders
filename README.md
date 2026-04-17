@@ -16,10 +16,10 @@ A sleek, interactive web application providing **data-driven probabilities of ex
 
 ## 🎯 Problem We’re Solving
 
-Planning an outdoor activity — a hike, event, or picnic — is often uncertain due to unpredictable weather.  
-While most weather apps forecast only a few days ahead, **WeatherScope** analyzes **multi-decade NASA climate records** to compute how likely “very hot,” “very cold,” “very wet,” “very windy,” or “very uncomfortable” conditions are for any place and date of the year.
+Planning outdoor activities like hikes, picnics, or events can be tricky when weather is unpredictable.
+Most weather apps only look a few days ahead — but **WeatherScope** goes further by analyzing **decades of NASA climate data** to show you the probability of extreme conditions like intense heat, heavy rain, strong winds, or uncomfortable humidity for any location and time of year.
 
-This empowers users to plan trips or events with **data-driven climate insight**, not just short-term forecasts.
+Whether you're planning a weekend trip or a large outdoor event, WeatherScope gives you **climate-backed insights** to make smarter, more confident decisions — not just guesses.
 
 ---
 
